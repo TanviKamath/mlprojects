@@ -1,5 +1,17 @@
 import logging
 import sys
+import os
+from datetime import datetime
+
+LOG_FILE = f"{datetime.now().strftime('%m_%d_%Y_%H_%M_%S')}.log"
+logs_path = os.path.join(os.getcwd(), "logs", LOG_FILE)
+os.makedirs(logs_path,exist_ok=True)
+LOG_FILE_PATH = os.path.join(logs_path, LOG_FILE)
+logging.basicConfig(
+    filename=LOG_FILE_PATH,
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(name)s - %(message)s'
+)
 
 def error_message_detail(error, error_detail: sys):
     """
@@ -25,5 +37,5 @@ if __name__ == "__main__":
     try:
         a=1/0
     except Exception as e:
-        logging.info("Exception occurred") 
-        raise CustomException(e, sys) from e
+        logging.info("Divide by zero error occurred") 
+        raise CustomException(e, sys)
