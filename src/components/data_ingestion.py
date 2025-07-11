@@ -12,6 +12,9 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")
 from src.exception import CustomException
 from src.logger import logging
 
+from src.components.data_transformation import DataTransformation
+from src.components.data_transformation import DataTransformationConfig
+
 @dataclass
 class DataIngestionConfig:
     dataset_path: str = os.path.join("notebook", "stud.csv")
@@ -56,5 +59,8 @@ class DataIngestion:
 if __name__ == "__main__":
     obj = DataIngestion()
     train_path, test_path = obj.initiate_data_ingestion()
+
+    data_transformation = DataTransformation()
+    data_transformation.initiate_data_transformation(train_path, test_path)
     print(f"Train data saved at: {train_path}")
     print(f"Test data saved at: {test_path}")
