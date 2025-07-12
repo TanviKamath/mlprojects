@@ -24,7 +24,7 @@ class DataTransformation:
     def __init__(self):
         self.data_transformation_config = DataTransformationConfig()
 
-    def get_data_transformer_object(self):
+    def get_data_transformer_object(self):   #get the data transformation object , matlab jo pipeline banegi
         try:
             logging.info("Creating data transformation pipeline")
 

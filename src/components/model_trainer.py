@@ -48,12 +48,53 @@ class ModelTrainer:
                 "CatBoostRegressor": CatBoostRegressor(verbose=0),
                 "XGBRegressor": XGBRegressor(eval_metric='rmse')
             }
+            params = {
+                "KNeighborsRegressor": {
+                    "n_neighbors": [3, 5, 7, 9],
+                    "weights": ["uniform", "distance"]
+                },
+                "DecisionTreeRegressor": {
+                    "max_depth": [None, 5, 10, 20],
+                    "min_samples_split": [2, 5, 10]
+                },
+                "RandomForestRegressor": {
+                    "n_estimators": [50, 100, 200],
+                    "max_depth": [None, 5, 10, 20]
+                },
+                "AdaBoostRegressor": {
+                    "n_estimators": [50, 100, 200],
+                    "learning_rate": [0.01, 0.1, 1.0]
+                },
+                "SVR": {
+                    "C": [0.1, 1, 10],
+                    "kernel": ["linear", "rbf"]
+                },
+                "LinearRegression": {},
+                "Ridge": {
+                    "alpha": [0.1, 1.0, 10.0]
+                },
+                "Lasso": {
+                    "alpha": [0.1, 1.0, 10.0]
+                },
+                "CatBoostRegressor": {
+                    "depth": [4, 6, 8],
+                    "learning_rate": [0.01, 0.05, 0.1],
+                    "iterations": [100, 200]
+                },
+                "XGBRegressor": {
+                    "n_estimators": [100, 200],
+                    "learning_rate": [0.01, 0.1, 0.2],
+                    "max_depth": [3, 6, 10]
+                }
+            }
+
 
             logging.info("Evaluating models")
-            model_report = evaluate_models(X_train, y_train, models)
+            model_report :dict=evaluate_models(X_train, y_train, X_test, y_test, models, params)
 
-            best_model_name = max(model_report, key=lambda name: model_report[name]['test_score'])
+            best_model_name = max(model_report, key=lambda k: model_report[k]['test_score'])
             best_model_score = model_report[best_model_name]['test_score']
+
             logging.info(f"Best model found: {best_model_name}")
 
             if best_model_score < 0.6:
