@@ -100,14 +100,17 @@ class ModelTrainer:
             if best_model_score < 0.6:
                 raise CustomException("No best model found with sufficient accuracy", sys)
 
+            best_model = models[best_model_name]
+            best_model.fit(X_train, y_train)
+
             save_object(
                 file_path=self.model_trainer_config.trained_model_file_path,
-                obj=best_model_name
+                obj=best_model
             )
             logging.info(f"Model saved at {self.model_trainer_config.trained_model_file_path}")
 
 
-            predicted = models[best_model_name].predict(X_test)
+            predicted = best_model.predict(X_test)
             r2_square = r2_score(y_test, predicted)
             return r2_square
 
